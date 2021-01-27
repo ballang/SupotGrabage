@@ -1,0 +1,37 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 22, 2021, 1:53:02 PM
+    Author     : BALLANG
+*/
+
+body {
+    background-color: #E8E8E8;
+}
+
+
+#cssmenu {padding: 0; margin: 0; border: 0; line-height: 1;}
+#cssmenu ul,
+#cssmenu ul li{list-style: none; margin: 0; padding: 0;}
+/*
+#cssmenu ul li.hover,
+#cssmenu ul li:hover {position: relative; z-index: 599; cursor: default;}*/
+
+#cssmenu {width:100%;background: #ffffff;
+          zoom: 1;  }
+#cssmenu:before {content: ''; display: block;}
+
+#cssmenu:after{content: ''; display: table; clear: both;}
+#cssmenu a {display: block; padding: 15px 20px; color: #f26724; text-decoration: none;
+             border: 1px solid #ffffff;border-radius: 5px}
+#cssmenu a.active {display: block; padding: 15px 20px; color: #f26724; background-color: #D9D5D4; text-decoration: none;
+            text-transform: uppercase; border: 1px solid #ffffff;border-radius: 5px}
+#cssmenu > ul {width: 100%;}
+#cssmenu > ul > li > a {border-left: 0px solid #095586; color: #095586;}
+
+#tb-data > thead >tr > th >div {font-size: 14px;}
+#tb-data > tbody >tr > td  {font-size: 14px;}
+/*#cssmenu > ul > li a:hover {background: #095586; color:#f1f1f1;}*/

@@ -1,0 +1,5 @@
+change|2021-01-26 15:21:48|check house_id [old=  and ] [crr_date=01123]
+change|2021-01-26 15:41:26|check house_id [old= 01 and ] [crr_date=01123]
+change|2021-01-26 15:43:26|check house_id [old= 01 and ] [crr_date=01 and 123]
+change|2021-01-26 15:43:57|check house_id [old= 01 and 123] [crr_date=01 and 123]
+changeUser [DEV] |2021-01-26 15:53:17|check house_id [old= 01 and 123] [crr_date=01 and 123]
