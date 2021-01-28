@@ -3,18 +3,187 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var table_person = null;
+var table_person_add = null;
+var table = null;
 $(document).ready(function () {
-    loadInit();
-    $('#tb-person tbody').on('click', 'tr', function () {
-        var data = table_person.row(this).data();
+    /*loadInit();*/
+    $('#tb-person-add tbody').on('click', 'tr', function () {
+        var data = table_person_add.row(this).data();
         console.log(data);
-        $("#ps_code").text(data['ps_code']);
-        $("#ps_name").val(data['ps_name']);
-        $("#md-person").modal("hide");
+        $("#ps_code_add").text(data['ps_code']);
+        $("#ps_name_add").val(data['ps_name']);
+        $("#md-person-add").modal("hide");
         loadMiterID();
     });
+    loadZone();
+
+
+    $('#md-create').on('shown.bs.modal', function () {
+        var my = $("#munit_month").val() + "/" + $("#munit_year").val();
+        $("#munit_month_munit_year").val(my);
+        $("#add-z_code").val($("#z_code").val() + "/" + $("#z_code :selected").text());
+    });
+
+    $('#md-person-add').on('shown.bs.modal', function () {
+        if (table_person_add != null) {
+            table_person_add.destroy();
+        }
+        $.ajax({
+            url: "php/api/person.php?=" + Math.random(),
+            type: 'POST',
+            data: {
+                'cm': 'load',
+            },
+            success: function (data, textStatus, jqXHR) {
+                var json = JSON.parse(data);
+                table_person_add = $('#tb-person-add').DataTable({
+                    "searching": true,
+                    "bLengthChange": false,
+                    "bFilter": false,
+                    "bInfo": false,
+                    "bAutoWidth": false,
+                    "data": json['data'],
+                    "columns": [
+                        /* {"data": null, "bSortable": false, "render": function (data, type, row, meta) {
+                         return meta.row + meta.settings._iDisplayStart + 1;
+                         }},*/
+                        {"data": "ps_code"},
+                        {"data": "ps_name"},
+                    ],
+                });
+
+                $(".dataTables_filter").hide();
+            }
+        });
+    });
 });
+function loadZone() {
+    $("#z_code").prop("disabled", true);
+    $.ajax({
+        url: "php/api/miter_zone.php?=" + Math.random(),
+        type: 'POST',
+        data: {
+            'cm': 'load'
+        },
+        success: function (data, textStatus, jqXHR) {
+            var json = JSON.parse(data);
+            $("#z_code").prop("disabled", false);
+            $("#z_code").empty();
+            for (var i = 0; i < json['data'].length; i++) {
+                $("#z_code").append("<option value='" + json['data'][i]['z_code'] + "'>" + json['data'][i]['z_desc'] + "</option>");
+            }
+
+            loadData();
+        }
+    });
+}
+
+function loadData() {
+    if (table != null) {
+        table.destroy();
+    }
+    $('#tb-data>tbody>tr').empty();
+    $.ajax({
+        url: "php/api/miter_unit.php?=" + Math.random(),
+        type: 'POST',
+        data: {
+            'cm': 'load2',
+            'munit_month': $("#munit_month").val(),
+            'munit_year': $("#munit_year").val(),
+            'z_code': $("#z_code").val()
+        },
+        success: function (data, textStatus, jqXHR) {
+            //console.log(data);
+            var json = JSON.parse(data);
+            console.log(json);
+
+
+            table = $('#tb-data').DataTable({
+                "searching": true,
+                "bLengthChange": false,
+                "bFilter": false,
+                "bInfo": false,
+                "bAutoWidth": false,
+                "data": json['data'],
+                "columns": [
+                    /* {"data": null, "bSortable": false, "render": function (data, type, row, meta) {
+                     return meta.row + meta.settings._iDisplayStart + 1;
+                     }},*/
+                    {"data": "munit_number"},
+                    {"data": "ps_name"},
+                    {"data": "period"},
+                    {"data": "befor_unit"},
+                    {"data": "after_unit"},
+                    {"data": "use_unit"},
+                    {"data": "is_garbage"},
+                    {
+                        "data": null,
+                        "bSortable": false,
+                        "mRender": function (o) {
+                            var html = "<div class=\"btn-group btn-group-sm\" role=\"group\" aria-label=\"Basic example\">";
+                            html += " <button    type=\"button\" onclick=\"del('" + o.munit_number + "')\" class=\"btn btn-sm btn-danger\" ><i class=\"fas fa-trash\"></i></button>";
+                            html += "  <button type=\"button\"  onclick=\"openEdit('" + o.munit_number + "')\" class=\"btn btn-sm btn-warning\"><i class=\"fas fa-pencil-alt\"></i></button>";
+                            html += "</div>";
+                            return html;
+                        }
+                    }
+                ],
+            });
+
+            $(".dataTables_filter").hide();
+
+
+
+
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log(errorThrown.toString());
+        }
+    });
+}
+
+
+
+function del(munit_number) {
+    swal({
+        title: "ยืนยันการลบข้อมูล ?",
+        text: "ลบข้อมูลการจดมิเตอร์น้ำ",
+        icon: "warning",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true,
+        confirmButtonText: "ลบข้อมูล",
+        cancelButtonText: "ยกเลิก",
+    }, function () {
+        setTimeout(function () {
+
+            $.ajax({
+                url: "php/api/miter_unit.php?=" + Math.random(),
+                type: 'POST',
+                data: {
+                    'cm': 'del',
+                    'munit_number': munit_number,
+                },
+                success: function (data, textStatus, jqXHR) {
+                    var json = JSON.parse(data);
+                    if (json['status'] == '1') {
+                        MESSAGE_SUCCESS(json['message']);
+                        loadData();
+                    } else {
+                        MESSAGE_ERROR(json['message']);
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown.toString());
+                }
+            });
+
+        }, TIME_OUT)
+    });
+}
+
+
+
 function zoneChange() {
     $("#ps_code").text("");
     $("#ps_name").val("");
@@ -59,7 +228,7 @@ function loadInit() {
             $("#ps_code").text("");
             $("#ps_name").val("");
             $("#crr_unit").val("");
-            
+
             loadMiterID();
 
         }
@@ -80,7 +249,7 @@ function loadMiterID() {
         type: 'POST',
         data: {
             'cm': 'read-zone',
-            "ps_code": $("#ps_code").text(),
+            "ps_code": $("#ps_code_add").text(),
             "z_code": $("#z_code").val(),
         },
         success: function (data, textStatus, jqXHR) {
@@ -120,6 +289,7 @@ function readMiterData() {
         },
         success: function (data, textStatus, jqXHR) {
             var json = JSON.parse(data);
+            console.log(json);
 
             $("#crr_unit").val(json['data']['crr_unit']);
             $("#after_unit").val("");
@@ -141,10 +311,15 @@ function readMiterData() {
                 $("#use_unit").val(json['data-unit']['use_unit']);
                 //$("#lat").val(json['data-unit']['write_lat']);
                 //$("#lng").val(json['data-unit']['write_lng']);
-
-
+                //$("#munit_month").prop("disabled", true);
+                // $("#munit_year").prop("disabled", true);
+                //alert(json['data-unit']['munit_number']);
                 $("#col-munit_number").show();
+                $("#munit_number").val(json['data-unit']['munit_number']);
 
+            } else {
+                //$("#munit_month").prop("disabled", false);
+                //$("#munit_year").prop("disabled", false);
             }
         }
     });
@@ -184,7 +359,7 @@ function cal_unit() {
     }
 }
 
-function Save() {
+function SaveAdd() {
 
     swal({
         title: "ยืนยันการบันทึกข้อมูล ?",
@@ -221,7 +396,6 @@ function Save() {
                     var json = JSON.parse(data);
 
                     if (json['status'] == '1') {
-                        loadInit();
                         swal({
                             title: json['message'],
                             type: "success",

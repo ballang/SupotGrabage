@@ -68,9 +68,9 @@ class MITER_WATER {
     public static function IS_HOUSE_ID($obj) {
         $query = "select * from miter_water where house_id='" . $obj['house_id'] . "' and z_code='" . $obj['z_code'] . "' and mt_ste<>'0'";
         $rs = mysqli_query($GLOBALS['con'], $query);
-        
+
         //APPEND_LOG($file, $cm, $message)
-        
+
         return mysqli_num_rows($rs);
     }
 
@@ -285,9 +285,9 @@ class MITER_WATER {
         INNER JOIN miter_water ON (miter_zone.z_code = miter_water.z_code)
         INNER JOIN person ON (miter_water.ps_code = person.ps_code) 
         where   miter_water.mt_ste <>'0'";
-        
-        if(strlen($obj['z_code'])>0){
-            $query .=" and miter_water.z_code='".$obj['z_code']."' ";
+
+        if (strlen($obj['z_code']) > 0) {
+            $query .= " and miter_water.z_code='" . $obj['z_code'] . "' ";
         }
 
         $arr = array();
@@ -310,23 +310,42 @@ class MITER_WATER {
         return $arr;
     }
 
-    
-     public static function LOAD_ZONE($obj) {
+    public static function LOAD_ZONE($obj) {
         $query = "select "
                 . " mt_id   "
-          
-                . " from miter_water where ps_code='".$obj['ps_code']."' and z_code='".$obj['z_code']."' and mt_ste <>'0'";
+                . " from miter_water where ps_code='" . $obj['ps_code'] . "' and z_code='" . $obj['z_code'] . "' and mt_ste <>'0'";
         $arr = array();
         $rs = mysqli_query($GLOBALS['con'], $query);
         while ($data = mysqli_fetch_array($rs)) {
             array_push($arr, array(
                 "mt_id" => $data['mt_id'],
-             
             ));
         }
         return $arr;
     }
-    
+
+    public static function LOAD_ZONE1($obj) {
+
+        $query = "SELECT 
+        miter_water.mt_id
+        FROM
+        miter_water
+        WHERE
+        miter_water.z_code = '".$obj['z_code']."' AND 
+        miter_water.ps_code = '".$obj['ps_code']."' AND 
+        miter_water.mt_id NOT IN 
+        (SELECT miter_unit.mt_id FROM miter_unit WHERE miter_unit.munit_number = '".$obj['munit_number']."' AND miter_unit.munit_year = '".$obj['munit_year']."' AND miter_unit.munit_ste <> '0')";
+
+        $arr = array();
+        $rs = mysqli_query($GLOBALS['con'], $query);
+        while ($data = mysqli_fetch_array($rs)) {
+            array_push($arr, array(
+                "mt_id" => $data['mt_id'],
+            ));
+        }
+        return $arr;
+    }
+
     public static function GARBAGE_DESC($code) {
         if ($code == '1') {
             return "ใช้";

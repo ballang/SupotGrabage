@@ -3,13 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/AppServ/www/water/php/class/miter_unit.php</file>
-            <file>file:/C:/AppServ/www/water/php/api/ini.php</file>
-            <file>file:/C:/AppServ/www/water/zjs/miter_unit.js</file>
-            <file>file:/C:/AppServ/www/water/zjs/var.js</file>
-            <file>file:/C:/AppServ/www/water/php/api/miter_unit.php</file>
-            <file>file:/C:/AppServ/www/water/zjs/watermiter.js</file>
-            <file>file:/C:/AppServ/www/water/watermiter.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/php/class/miter_water.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/watermiter-xxx.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/php/class/miter_unit.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/php/api/miter_unit.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/watermiter.php</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/zjs/watermiter.js</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/zjs/persons.js</file>
+            <file>file:/C:/AppServ/www/SupotGrabage/php/api/miter_water.php</file>
         </group>
     </open-files>
 </project-private>

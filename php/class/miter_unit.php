@@ -170,8 +170,8 @@ class MITER_UNIT {
 
     public static function DISPLAY_MY($obj) {
         $query = "select * from miter_unit "
-                . " where mt_id ='" . $obj['mt_id'] . "' and munit_month='".$obj['munit_month']."' "
-                . " and munit_year='".$obj['munit_year']."' and "
+                . " where mt_id ='" . $obj['mt_id'] . "' and munit_month='" . $obj['munit_month'] . "' "
+                . " and munit_year='" . $obj['munit_year'] . "' and "
                 . " munit_ste<>'0'";
         $arr = array(
             "munit_number" => "",
@@ -288,6 +288,46 @@ class MITER_UNIT {
                 "munit_extn4" => $data['munit_extn4'],
                 "munit_extn5" => $data['munit_extn5'],
                 "munit_ste" => $data['munit_ste']
+            ));
+        }
+        return $arr;
+    }
+
+    public static function LOAD2($obj) {
+        $query = "SELECT 
+        miter_unit.munit_number,
+        miter_unit.mt_id,
+        miter_unit.befor_unit,
+        miter_unit.after_unit,
+        miter_unit.use_unit,
+        miter_unit.is_garbage,
+        person.ps_name,
+        miter_unit.munit_create_on,
+        miter_unit.munit_create_by,
+        miter_unit.munit_month,
+        CONCAT(miter_unit.munit_month,'/',miter_unit.munit_year) as period
+        FROM
+        miter_water
+        INNER JOIN miter_unit ON (miter_water.mt_id = miter_unit.mt_id)
+        INNER JOIN person ON (miter_water.ps_code = person.ps_code)
+        where miter_unit.munit_month='" . $obj['munit_month'] . "' and  
+        miter_unit.munit_year='" . $obj['munit_year'] . "' and  
+        miter_water.z_code='" . $obj['z_code'] . "'";
+        $arr = array();
+        $rs = mysqli_query($GLOBALS['con'], $query);
+        while ($data = mysqli_fetch_array($rs)) {
+
+            array_push($arr, array(
+                "munit_number" => $data['munit_number'],
+                "mt_id" => $data['mt_id'],
+                "befor_unit" => $data['befor_unit'],
+                "after_unit" => $data['after_unit'],
+                "use_unit" => $data['use_unit'],
+                "is_garbage" => MITER_WATER::GARBAGE_DESC( $data['is_garbage']),
+                "ps_name" => $data['ps_name'],
+                "munit_create_on" => $data['munit_create_on'],
+                "munit_create_by" => $data["munit_create_by"],
+                "period"=>$data['period']
             ));
         }
         return $arr;

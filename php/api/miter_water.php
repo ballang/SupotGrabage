@@ -121,7 +121,7 @@ switch ($cm) {
         break;
     case "read-zone":
         
-          echo json_encode(array("status" => "1", "message" => "success",  "data" => MITER_WATER::LOAD_ZONE($obj)));
+          echo json_encode(array("status" => "1", "message" => "success",  "data" => MITER_WATER::LOAD_ZONE1($obj)));
         break;
     default:
         echo json_encode(array("status" => "0", "message" => "Error Command"));

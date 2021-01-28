@@ -31,6 +31,7 @@ $munit_extn3 = (isset($_POST['munit_extn3'])) ? $_POST['munit_extn3'] : '';
 $munit_extn4 = (isset($_POST['munit_extn4'])) ? $_POST['munit_extn4'] : '';
 $munit_extn5 = (isset($_POST['munit_extn5'])) ? $_POST['munit_extn5'] : '';
 $munit_ste = (isset($_POST['munit_ste'])) ? $_POST['munit_ste'] : '';
+$z_code = (isset($_POST['z_code'])) ? $_POST['z_code'] : '';
 $obj = array(
     "munit_number" => $munit_number,
     "munit_month" => $munit_month,
@@ -56,7 +57,8 @@ $obj = array(
     "munit_extn3" => $munit_extn3,
     "munit_extn4" => $munit_extn4,
     "munit_extn5" => $munit_extn5,
-    "munit_ste" => $munit_ste
+    "munit_ste" => $munit_ste,
+    "z_code"=>$z_code
 );
 switch ($cm) {
     case "init":
@@ -102,6 +104,10 @@ switch ($cm) {
         break;
     case "read-miter":
         echo json_encode(array("status" => "1", "message" => "success", "data" => MITER_WATER::DISPLAY($obj), "data-unit" => MITER_UNIT::DISPLAY_MY($obj)));
+        break;
+    case "load2":
+        
+          echo json_encode(array("status" => "1", "message" => "success", "data" => MITER_UNIT::LOAD2($obj)));
         break;
     default:
         echo json_encode(array("status" => "0", "message" => "Error Command"));
