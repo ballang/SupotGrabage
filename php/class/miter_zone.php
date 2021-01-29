@@ -174,6 +174,29 @@ class MITER_ZONE {
         return $arr;
     }
 
-    
+    public static function LOAD2($obj) {
+        $query = "SELECT 
+        miter_zone.z_code,
+        miter_zone.z_desc,
+        COUNT(miter_water.z_code) AS z_count
+        FROM
+        miter_zone
+        LEFT OUTER JOIN miter_water ON (miter_zone.z_code <= miter_water.z_code)
+        GROUP BY
+        miter_zone.z_code,
+        miter_zone.z_desc";
+
+        $arr = array();
+        $rs = mysqli_query($GLOBALS['con'], $query);
+        while ($data = mysqli_fetch_array($rs)) {
+            array_push($arr, array(
+                "z_code"=>$data['z_code'],
+                "z_desc"=>$data['z_desc'],
+                "z_count"=>$data['z_count']
+                
+            ));
+        }
+        return $arr;
+    }
 
 }

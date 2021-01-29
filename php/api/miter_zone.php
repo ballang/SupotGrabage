@@ -41,6 +41,12 @@ $obj = array(
 );
 switch ($cm) {
     case "create":
+
+        $obj["z_create_on"] = date('Y-m-d H:i:s');
+        $obj["z_create_by"] = $GLOBALS['USER'];
+        $obj["z_update_on"] = date('Y-m-d H:i:s');
+        $obj["z_update_by"] = $GLOBALS['USER'];
+        $obj['z_ste'] ='1';
         $rs = MITER_ZONE::CREATE($obj);
         if ($rs == 1) {
             echo json_encode(array("status" => "1", "message" => "บันทึกข้อมูลสำเร็จ"));
@@ -68,7 +74,7 @@ switch ($cm) {
         echo json_encode(array("status" => "1", "message" => "success", "data" => MITER_ZONE::DISPLAY($obj)));
         break;
     case "load":
-        echo json_encode(array("status" => "1", "message" => "success", "data" => MITER_ZONE::LOAD($obj)));
+        echo json_encode(array("status" => "1", "message" => "success", "data" => MITER_ZONE::LOAD2($obj)));
         break;
     default:
         echo json_encode(array("status" => "0", "message" => "Error Command"));
