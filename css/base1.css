@@ -1,0 +1,24 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jan 29, 2021, 9:10:29 PM
+    Author     : BALLANG
+*/
+
+   body {
+
+            background-image: linear-gradient(to right, #0581bc, #008cc3, #0097ca, #00a1d0, #00acd6);
+
+        }
+        #contain{
+            background-image: url('../img/bg.png');
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: bottom; 
+            background-size: contain;
+            width: 100%;
+            height: 100%;
+        }
